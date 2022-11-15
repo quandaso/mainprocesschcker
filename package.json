@@ -1,0 +1,15 @@
+{
+  "name": "main_login",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "ffi-napi": "^4.0.3",
+    "puppeteer": "^19.2.2",
+    "ref-union-di": "^1.0.1",
+    "win32-api": "^20.1.0"
+  }
+}
