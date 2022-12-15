@@ -3,14 +3,20 @@ const {sleep, run} = require('./lib');
 const config  = require('./config');
 const {$get} = require('./httpclient')
 
+function timestamp() {
+    return new Date().toISOString().slice(0, 19).replace('T', ' ');
+}
 let originalProcesses = [];
 async function main() {
     originalProcesses = await getMainProcesses();
-    console.log('ORIGINAL PROCESS COUNT', originalProcesses.length)
+    console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
+    await telegramSend('ORIGINAL PROCESS COUNT: ' + originalProcesses.length)
+
     processCheck();
 }
 
-async function telegramSend(chatId, $message) {
+async function telegramSend($message, chatId= config.TELEGRAM_ID) {
+    $message = '[' + timestamp() + ']\n' + $message;
     let url = "https://api.telegram.org/bot" + config.TELEGRAM_TOKEN + "/sendMessage?chat_id=" + chatId;
     url = url + "&text=" + encodeURIComponent($message) + '&parse_mode=html';
     await $get(url);
@@ -37,12 +43,13 @@ async function processCheck() {
             }
         });
 
-        const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        await telegramSend(config.TELEGRAM_ID, '[' + timestamp + ']\n' + message);
+        await telegramSend(message);
         notifyCount++;
         if (notifyCount >= 10) {
             notifyCount = 0;
             originalProcesses = processes;
+            console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
+            await telegramSend('ORIGINAL PROCESS COUNT: ' + originalProcesses.length)
         }
 
     } else {
