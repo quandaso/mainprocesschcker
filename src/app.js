@@ -3,12 +3,16 @@ const {sleep, run} = require('./lib');
 const config  = require('./config');
 const {$get} = require('./httpclient')
 const MAX_NOTIFY_COUNT = 1;
+const timezoneOffset = 7;
 
 function timestamp() {
-    return new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const d = new Date;
+    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-'+ d.getDate() +
+        ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
 }
 let originalProcesses = [];
 async function main() {
+    
     originalProcesses = await getMainProcesses();
     console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
     await telegramSend('ORIGINAL PROCESS COUNT: ' + originalProcesses.length)
