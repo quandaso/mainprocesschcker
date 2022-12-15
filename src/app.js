@@ -45,7 +45,7 @@ async function processCheck() {
 
         await telegramSend(message);
         notifyCount++;
-        if (notifyCount >= 10) {
+        if (notifyCount >= 5) {
             notifyCount = 0;
             originalProcesses = processes;
             console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
