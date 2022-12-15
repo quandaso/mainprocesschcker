@@ -9,17 +9,17 @@ function pad(number) {
 }
 
 function run(command, returnData = false) {
-    console.log('\x1b[36m%s\x1b[0m', '[' + command + ']')
+    //console.log('\x1b[36m%s\x1b[0m', '[' + command + ']')
     return new Promise((resolve, reject) => {
         const process = exec(command);
 
-        let stdoutResponse, stderrResponse = '';
+        let stdoutResponse = '', stderrResponse = '';
         process.stdout.on('data', function (data) {
-            stdoutResponse +=data.toString()
+            stdoutResponse += data.toString()
         });
 
         process.stderr.on('data', function (data) {
-            stderrResponse +=data.toString()
+            stderrResponse += data.toString()
         });
 
         process.on('exit', function () {

@@ -19,7 +19,7 @@ async function $get(uri, params = {}) {
     } else {
         url = baseUrl + uri;
     }
-    console.log('[GET]' + url);
+    //console.log('[GET]' + url);
     return fetch(url, {
         headers: {...defaultHeaders}
     }).then(response => {
