@@ -6,6 +6,7 @@ const {$get} = require('./httpclient')
 let originalProcesses = [];
 async function main() {
     originalProcesses = await getMainProcesses();
+    console.log('ORIGINAL PROCESS COUNT', originalProcesses.length)
     processCheck();
 }
 
