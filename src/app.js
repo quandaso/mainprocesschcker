@@ -17,6 +17,7 @@ async function telegramSend(chatId, $message) {
 }
 
 let checkedCount = 0;
+let notifyCount = 0;
 async function processCheck() {
     const  processes = await getMainProcesses();
     checkedCount++;
@@ -36,7 +37,13 @@ async function processCheck() {
             }
         });
 
-        await telegramSend(config.TELEGRAM_ID, message)
+        const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        await telegramSend(config.TELEGRAM_ID, '[' + timestamp + ']\n' + message);
+        notifyCount++;
+        if (notifyCount >= 10) {
+            notifyCount = 0;
+            originalProcesses = processes;
+        }
 
     } else {
         process.stdout.write(`OK\n`)
