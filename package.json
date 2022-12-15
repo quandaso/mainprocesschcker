@@ -7,7 +7,9 @@
     "start": "node src/app.js"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
     "ffi-napi": "^4.0.3",
+    "node-fetch": "^2.6.6",
     "ps-node": "^0.1.6",
     "puppeteer": "^19.2.2",
     "ref-union-di": "^1.0.1",
