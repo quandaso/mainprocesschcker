@@ -2,6 +2,7 @@ require('dotenv').config()
 const {sleep, run} = require('./lib');
 const config  = require('./config');
 const {$get} = require('./httpclient')
+const MAX_NOTIFY_COUNT = 1;
 
 function timestamp() {
     return new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -45,7 +46,7 @@ async function processCheck() {
 
         await telegramSend(message);
         notifyCount++;
-        if (notifyCount >= 5) {
+        if (notifyCount >= MAX_NOTIFY_COUNT) {
             notifyCount = 0;
             originalProcesses = processes;
             console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
