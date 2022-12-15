@@ -58,7 +58,7 @@ async function getMainProcesses() {
         }
 
         if (line.toLowerCase().indexOf('main.exe') > -1) {
-            
+
             const tmp = line.split(/(\s+)/);
             muProcess.push({
                 name: tmp[0],
@@ -76,7 +76,7 @@ async function getMainProcesses() {
 
 main().then(r => {
 
-    console.log("DONE");
+    //console.log("DONE");
     //process.exit(0)
 }).catch(err => {
     console.error(err)
