@@ -3,7 +3,8 @@ const {sleep, run} = require('./lib');
 const config  = require('./config');
 const {$get} = require('./httpclient')
 const MAX_NOTIFY_COUNT = 1;
-const timezoneOffset = 7;
+let checkedCount = 0;
+let notifyCount = 0;
 
 function timestamp() {
     const d = new Date;
@@ -12,12 +13,17 @@ function timestamp() {
 }
 let originalProcesses = [];
 async function main() {
-    
-    originalProcesses = await getMainProcesses();
-    console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
-    await telegramSend('ORIGINAL PROCESS COUNT: ' + originalProcesses.length)
+
+    await initialProcess(await getMainProcesses());
 
     processCheck();
+}
+
+async function initialProcess(processes) {
+    originalProcesses = processes;
+    console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
+    await telegramSend('ORIGINAL PROCESS COUNT: ' + originalProcesses.length);
+    notifyCount = 0;
 }
 
 async function telegramSend($message, chatId= config.TELEGRAM_ID) {
@@ -27,8 +33,7 @@ async function telegramSend($message, chatId= config.TELEGRAM_ID) {
     await $get(url);
 }
 
-let checkedCount = 0;
-let notifyCount = 0;
+
 async function processCheck() {
     const  processes = await getMainProcesses();
     checkedCount++;
@@ -51,18 +56,12 @@ async function processCheck() {
         await telegramSend(message);
         notifyCount++;
         if (notifyCount >= MAX_NOTIFY_COUNT) {
-            notifyCount = 0;
-            originalProcesses = processes;
-            console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
-            await telegramSend('ORIGINAL PROCESS COUNT: ' + originalProcesses.length)
+            await initialProcess(processes)
         }
 
     } else {
         if (processes.length > originalProcesses.length) {
-            originalProcesses = processes;
-            console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
-            await telegramSend('ORIGINAL PROCESS COUNT: ' + originalProcesses.length);
-            notifyCount = 0;
+            await initialProcess(processes)
         }
 
         process.stdout.write(`OK\n`)
