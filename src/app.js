@@ -6,7 +6,7 @@ const MAX_NOTIFY_COUNT = 1;
 let checkedCount = 0;
 let notifyCount = 0;
 
-let INTERVAL_CHECK_TIME = config.INTERVAL_CHECK_TIME;
+let INTERVAL_CHECK_TIME = parseInt(config.INTERVAL_CHECK_TIME) || 15000;
 
 if (INTERVAL_CHECK_TIME < 15000) {
     INTERVAL_CHECK_TIME = 15000;
