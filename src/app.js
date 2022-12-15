@@ -6,6 +6,13 @@ const MAX_NOTIFY_COUNT = 1;
 let checkedCount = 0;
 let notifyCount = 0;
 
+let INTERVAL_CHECK_TIME = config.INTERVAL_CHECK_TIME;
+
+if (INTERVAL_CHECK_TIME < 15000) {
+    INTERVAL_CHECK_TIME = 15000;
+    console.warn('env.INTERVAL_CHECK_TIME must >= 15000ms')
+}
+
 function timestamp() {
     const d = new Date;
     return config.APP_NAME + '::' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-'+ d.getDate() +
@@ -13,7 +20,10 @@ function timestamp() {
 }
 let originalProcesses = [];
 async function main() {
-
+    console.log('````````````````````````````````````````````````')
+    console.log('MainProcessChecker v1.0')
+    console.log('config.INTERVAL_CHECK_TIME', config.INTERVAL_CHECK_TIME)
+    console.log('````````````````````````````````````````````````')
     await initialProcess(await getMainProcesses());
 
     processCheck();
@@ -67,7 +77,7 @@ async function processCheck() {
         process.stdout.write(`OK\n`)
     }
 
-    setTimeout(processCheck, 15000)
+    setTimeout(processCheck, INTERVAL_CHECK_TIME)
 }
 
 async function getMainProcesses() {
