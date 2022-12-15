@@ -53,6 +53,13 @@ async function processCheck() {
         }
 
     } else {
+        if (processes.length > originalProcesses.length) {
+            originalProcesses = processes;
+            console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
+            await telegramSend('ORIGINAL PROCESS COUNT: ' + originalProcesses.length);
+            notifyCount = 0;
+        }
+
         process.stdout.write(`OK\n`)
     }
 
