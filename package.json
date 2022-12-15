@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "ffi-napi": "^4.0.3",
+    "ps-node": "^0.1.6",
     "puppeteer": "^19.2.2",
     "ref-union-di": "^1.0.1",
     "win32-api": "^20.1.0"

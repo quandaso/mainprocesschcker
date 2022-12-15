@@ -16,15 +16,13 @@ const KEY_MAP = {
 const {
     user32FindWindowEx,
     winspoolGetDefaultPrinter,
+    WTSEnumerateProcesses
 } = require('win32-api/fun')
 
 async function test() {
-
-
 // Retrieves the printer name of the default printer for the current user on the local computer
 
-    const child = spawn('notepad.exe');
-    const hWnd = await user32FindWindowEx(0, 0, 'Notepad', null);
+    const hWnd = await user32FindWindowEx(0, 0, 'Mu', null);
     console.log(hWnd);
 }
 
