@@ -29,13 +29,13 @@ async function processCheck() {
         let message = '';
         originalProcesses.forEach(p => {
             if (!currentProcessMap.hasOwnProperty(p.pid)) {
-                const m  ='Main ' + p.pid + ' disconnected';
+                const m  = 'Main ' + p.pid + ' disconnected\n';
                 message += m;
                 process.stdout.write(m + "\n");
             }
         });
 
-        await telegramSend()
+        await telegramSend(config.TELEGRAM_ID, message)
 
     } else {
         process.stdout.write(`OK\n`)
