@@ -1,5 +1,5 @@
 ###
-Required nodejs 16 or higher
+Required nodejs 16 or higher https://nodejs.org/en/
 
 ### How to install
 Copy .env.example to .env:<br>
