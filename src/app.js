@@ -66,39 +66,45 @@ async function telegramUpdate() {
 }
 
 async function processCheck() {
-    const  processes = await getMainProcesses();
-    checkedCount++;
-    process.stdout.write(`[${checkedCount}] Checking Main.exe...`)
-    if (processes.length < originalProcesses.length) {
-        const currentProcessMap = {};
-        processes.forEach(p => {
-            currentProcessMap[p.pid] = p;
-        });
+    try {
+        const  processes = await getMainProcesses();
+        checkedCount++;
+        process.stdout.write(`[${checkedCount}] Checking Main.exe...`)
+        if (processes.length < originalProcesses.length) {
+            const currentProcessMap = {};
+            processes.forEach(p => {
+                currentProcessMap[p.pid] = p;
+            });
 
-        let message = '';
-        originalProcesses.forEach(p => {
-            if (!currentProcessMap.hasOwnProperty(p.pid)) {
-                const m  = 'Main ' + p.pid + ' disconnected\n';
-                message += m;
-                process.stdout.write(m + "\n");
+            let message = '';
+            originalProcesses.forEach(p => {
+                if (!currentProcessMap.hasOwnProperty(p.pid)) {
+                    const m  = 'Main ' + p.pid + ' disconnected\n';
+                    message += m;
+                    process.stdout.write(m + "\n");
+                }
+            });
+
+            await telegramSend(message);
+            notifyCount++;
+            if (notifyCount >= MAX_NOTIFY_COUNT) {
+                await initialProcess(processes)
             }
-        });
 
-        await telegramSend(message);
-        notifyCount++;
-        if (notifyCount >= MAX_NOTIFY_COUNT) {
-            await initialProcess(processes)
+        } else {
+            if (processes.length > originalProcesses.length) {
+                await initialProcess(processes)
+            }
+
+            process.stdout.write(`OK\n`)
         }
 
-    } else {
-        if (processes.length > originalProcesses.length) {
-            await initialProcess(processes)
-        }
-
-        process.stdout.write(`OK\n`)
+        setTimeout(processCheck, INTERVAL_CHECK_TIME)
+    } catch (err) {
+        console.error(err);
+        setTimeout(processCheck, INTERVAL_CHECK_TIME)
     }
 
-    setTimeout(processCheck, INTERVAL_CHECK_TIME)
 }
 
 async function getMainProcesses() {
