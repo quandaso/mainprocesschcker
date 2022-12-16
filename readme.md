@@ -19,3 +19,4 @@ TELEGRAM_ID=YourTelegramId<br>
 2. Type `/newbot`
 3. After create your bot, you have to chat with him, Press start and chat some random messages and wait about one minute
 4. Run `getchatid.cmd` to get ChatID and copy to .env file
+5. Run `start.cmd` to start monitoring
