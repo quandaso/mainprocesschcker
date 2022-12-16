@@ -18,4 +18,4 @@ TELEGRAM_ID=YourTelegramId<br>
 1. Open telegram find [@BotFather](https://t.me/BotFather) (https://t.me/BotFather)
 2. Type `/newbot`
 3. After create your bot, you have to chat with him, Press start and chat some random messages and wait about one minute
-4. Run getchatid.cmd to get ChatID and copy to .env file
+4. Run `getchatid.cmd` to get ChatID and copy to .env file
