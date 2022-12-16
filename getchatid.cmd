@@ -1,2 +1,3 @@
 @echo off
-node src/app.js --get-token
+node src/app.js --update
+pause
