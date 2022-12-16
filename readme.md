@@ -14,10 +14,8 @@ TELEGRAM_ID=YourTelegramId<br>
 ### How to run
 `Run start.cmd`
 
-### How to create telegram TELEGRAM_TOKEN
+### How to create telegram TELEGRAM_TOKEN and TELEGRAM_ID
 1. Open telegram find [@BotFather](https://t.me/BotFather) (https://t.me/BotFather)
 2. Type `/newbot`
 3. After create your bot, you have to chat with him, Press start and chat some random messages and wait about one minute
-
-### How to get your TELEGRAM_ID
-1. After set TELEGRAM_TOKEN you can run getchatid.cmd to get ChatID
+4. Run getchatid.cmd to get ChatID and copy to .env file
