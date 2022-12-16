@@ -9,9 +9,10 @@ TELEGRAM_TOKEN=YourTelegramToken<br>
 TELEGRAM_ID=YourTelegramId<br>
 
 `yarn install`<br>
-`yarn start`
 
 
+### How to run
+`Run start.cmd`
 
 ### How to create telegram TELEGRAM_TOKEN
 1. Open telegram find [@BotFather](https://t.me/BotFather) (https://t.me/BotFather)
