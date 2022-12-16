@@ -20,6 +20,22 @@ function timestamp() {
 }
 let originalProcesses = [];
 async function main() {
+    if (process.argv[2] === '--update') {
+        const res = await telegramUpdate();
+        if (!res.ok) {
+            console.error('Error when get updates', res);
+            return;
+        }
+
+        if (res.result.length === 0) {
+            console.log('No updates!');
+            return;
+        }
+
+        console.log('ChatID=', res.result[0].message.from.id)
+
+        return;
+    }
     console.log('````````````````````````````````````````````````')
     console.log('MainProcessChecker v1.0')
     console.log('config.INTERVAL_CHECK_TIME', config.INTERVAL_CHECK_TIME)
@@ -43,6 +59,11 @@ async function telegramSend($message, chatId= config.TELEGRAM_ID) {
     await $get(url);
 }
 
+async function telegramUpdate() {
+    const url = `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/getUpdates`;
+
+    return $get(url);
+}
 
 async function processCheck() {
     const  processes = await getMainProcesses();

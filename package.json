@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "update": "node src/app.js --update"
   },
   "dependencies": {
     "dotenv": "^16.0.3",

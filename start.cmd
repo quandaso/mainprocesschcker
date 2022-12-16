@@ -1,2 +1,7 @@
 @echo off
-yarn start
+:loop
+
+node src/app.js
+
+timeout 5
+goto loop
