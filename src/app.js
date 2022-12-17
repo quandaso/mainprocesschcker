@@ -49,8 +49,8 @@ async function main() {
     }
     console.log('````````````````````````````````````````````````')
     console.log('MainProcessChecker v1.0')
-    console.log('config.INTERVAL_CHECK_TIME', config.INTERVAL_CHECK_TIME)
-    console.log('config.INTERVAL_REPORT_TIME', config.INTERVAL_REPORT_TIME)
+    console.log('config.INTERVAL_CHECK_TIME', INTERVAL_CHECK_TIME)
+    console.log('config.INTERVAL_REPORT_TIME', INTERVAL_REPORT_TIME)
     console.log('````````````````````````````````````````````````')
     await initialProcess(await getMainProcesses());
 
