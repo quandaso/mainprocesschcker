@@ -6,11 +6,22 @@ const MAX_NOTIFY_COUNT = 1;
 let checkedCount = 0;
 let notifyCount = 0;
 
-let INTERVAL_CHECK_TIME = parseInt(config.INTERVAL_CHECK_TIME) || 15000;
+let INTERVAL_CHECK_TIME = parseInt(config.INTERVAL_CHECK_TIME) || 15;
+let INTERVAL_REPORT_TIME = parseInt(config.INTERVAL_REPORT_TIME) || 3600;
+INTERVAL_CHECK_TIME = getValidRange(INTERVAL_CHECK_TIME, 15, 120, 'INTERVAL_CHECK_TIME');
+INTERVAL_REPORT_TIME = getValidRange(INTERVAL_REPORT_TIME, 3600, 7200, 'INTERVAL_REPORT_TIME');
 
-if (INTERVAL_CHECK_TIME < 15000) {
-    INTERVAL_CHECK_TIME = 15000;
-    console.warn('env.INTERVAL_CHECK_TIME must >= 15000ms')
+
+function getValidRange(value, from, to, tag) {
+    if (value < from) {
+        console.warn(`${tag} must >= ${from}s`);
+        value = from;
+    } else if (value > to) {
+        console.warn(`${tag} must <= ${to}s`);
+        value = to;
+    }
+
+    return value
 }
 
 function timestamp() {
@@ -39,10 +50,12 @@ async function main() {
     console.log('````````````````````````````````````````````````')
     console.log('MainProcessChecker v1.0')
     console.log('config.INTERVAL_CHECK_TIME', config.INTERVAL_CHECK_TIME)
+    console.log('config.INTERVAL_REPORT_TIME', config.INTERVAL_REPORT_TIME)
     console.log('````````````````````````````````````````````````')
     await initialProcess(await getMainProcesses());
 
     processCheck();
+    intervalReport();
 }
 
 async function initialProcess(processes) {
@@ -63,6 +76,17 @@ async function telegramUpdate() {
     const url = `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/getUpdates`;
 
     return $get(url);
+}
+
+async function intervalReport() {
+    try {
+        console.log('INTERVAL REPORT: PROCESS COUNT', originalProcesses.length);
+        await telegramSend('INTERVAL REPORT: PROCESS COUNT ' +  originalProcesses.length)
+    } catch (err) {
+        console.error(err);
+    }
+
+    setTimeout(intervalReport, 1000*INTERVAL_REPORT_TIME)
 }
 
 async function processCheck() {
@@ -98,13 +122,11 @@ async function processCheck() {
 
             process.stdout.write(`OK\n`)
         }
-
-        setTimeout(processCheck, INTERVAL_CHECK_TIME)
     } catch (err) {
         console.error(err);
-        setTimeout(processCheck, INTERVAL_CHECK_TIME)
     }
 
+    setTimeout(processCheck, 1000*INTERVAL_CHECK_TIME);
 }
 
 async function getMainProcesses() {
