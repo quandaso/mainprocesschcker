@@ -8,11 +8,12 @@ APP_NAME=YourAppName<br>
 TELEGRAM_TOKEN=YourTelegramToken<br>
 TELEGRAM_ID=YourTelegramId<br>
 
-`yarn install`<br>
 
 
 ### How to run
-`Run start.cmd`
+1. Run `install.cmd` to run npm install <br>
+2. Run `start.cmd`
+
 
 ### How to create telegram TELEGRAM_TOKEN and TELEGRAM_ID
 1. Open telegram find [@BotFather](https://t.me/BotFather) (https://t.me/BotFather)
