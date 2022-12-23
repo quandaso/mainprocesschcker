@@ -55,13 +55,25 @@ async function main() {
     await initialProcess(await getMainProcesses());
 
     processCheck();
-    intervalReport();
+
+    setTimeout(intervalReport, 1000*INTERVAL_REPORT_TIME)
 }
 
 async function initialProcess(processes) {
+    const originalMap = {};
+    originalProcesses.forEach(op => {
+        originalMap[op.pid] = op;
+    });
+
+    let messages = [];
+    processes.forEach(p => {
+        if (!originalMap.hasOwnProperty(p.pid)) {
+            messages.push(`Main ${p.pid} added`);
+        }
+    })
     originalProcesses = processes;
     console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
-    await telegramSend('ORIGINAL PROCESS COUNT: ' + originalProcesses.length);
+    await telegramSend('ORIGINAL PROCESS COUNT: ' + processes.length + '\n' + messages.join("\n") );
     notifyCount = 0;
 }
 
