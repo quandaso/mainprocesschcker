@@ -51,6 +51,7 @@ async function main() {
     console.log('MainProcessChecker v1.0')
     console.log('config.INTERVAL_CHECK_TIME', INTERVAL_CHECK_TIME)
     console.log('config.INTERVAL_REPORT_TIME', INTERVAL_REPORT_TIME)
+    console.log('config.SILENT_MODE', config.SILENT_MODE)
     console.log('````````````````````````````````````````````````')
     await initialProcess(await getMainProcesses());
 
@@ -101,11 +102,24 @@ async function intervalReport() {
     setTimeout(intervalReport, 1000*INTERVAL_REPORT_TIME)
 }
 
+function print(message) {
+    if (!config.SILENT_MODE) {
+        process.stdout.write(message);
+    }
+}
+
+function println(message) {
+    if (!config.SILENT_MODE) {
+        process.stdout.write(message + "\n");
+    }
+}
+
 async function processCheck() {
     try {
         const  processes = await getMainProcesses();
         checkedCount++;
-        process.stdout.write(`[${checkedCount}] Checking Main.exe...`)
+        print(`[${checkedCount}] Checking Main.exe...`);
+
         if (processes.length < originalProcesses.length) {
             const currentProcessMap = {};
             processes.forEach(p => {
@@ -117,7 +131,7 @@ async function processCheck() {
                 if (!currentProcessMap.hasOwnProperty(p.pid)) {
                     const m  = 'Main ' + p.pid + ' disconnected\n';
                     message += m;
-                    process.stdout.write(m + "\n");
+                    println(m);
                 }
             });
 
@@ -132,7 +146,7 @@ async function processCheck() {
                 await initialProcess(processes)
             }
 
-            process.stdout.write(`OK\n`)
+            println('OK');
         }
     } catch (err) {
         console.error(err);
