@@ -24,11 +24,29 @@ function getValidRange(value, from, to, tag) {
     return value
 }
 
+function info(...args) {
+    const _args = ['[' + timestamp() + ']'];
+    for (let i = 0; i < args.length; i++) {
+        _args.push(args[i]);
+    }
+
+    console.log(..._args);
+}
+
+function pad10(n) {
+    if (n < 10) {
+        return '0' + n.toString();
+    }
+
+    return n.toString();
+}
+
 function timestamp() {
     const d = new Date;
-    return config.APP_NAME + '::' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-'+ d.getDate() +
-        ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+    return config.APP_NAME + '::' + d.getFullYear() + '-' + pad10(d.getMonth() + 1) + '-'+ pad10(d.getDate()) +
+        ' ' + pad10(d.getHours()) + ':' + pad10(d.getMinutes()) + ':' + pad10(d.getSeconds())
 }
+
 let originalProcesses = [];
 async function main() {
     if (process.argv[2] === '--update') {
@@ -73,7 +91,7 @@ async function initialProcess(processes) {
         }
     })
     originalProcesses = processes;
-    console.log('ORIGINAL PROCESS COUNT', originalProcesses.length);
+    info('ORIGINAL PROCESS COUNT', originalProcesses.length);
     await telegramSend('ORIGINAL PROCESS COUNT: ' + processes.length + '\n' + messages.join("\n") );
     notifyCount = 0;
 }
@@ -149,7 +167,7 @@ async function processCheck() {
             println('OK');
         }
     } catch (err) {
-        console.error(err);
+        info(err);
     }
 
     setTimeout(processCheck, 1000*INTERVAL_CHECK_TIME);
