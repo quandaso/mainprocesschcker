@@ -9,7 +9,7 @@ let notifyCount = 0;
 let INTERVAL_CHECK_TIME = parseInt(config.INTERVAL_CHECK_TIME) || 15;
 let INTERVAL_REPORT_TIME = parseInt(config.INTERVAL_REPORT_TIME) || 3600;
 INTERVAL_CHECK_TIME = getValidRange(INTERVAL_CHECK_TIME, 15, 120, 'INTERVAL_CHECK_TIME');
-INTERVAL_REPORT_TIME = getValidRange(INTERVAL_REPORT_TIME, 3600, 7200, 'INTERVAL_REPORT_TIME');
+INTERVAL_REPORT_TIME = getValidRange(INTERVAL_REPORT_TIME, 3600, 86400, 'INTERVAL_REPORT_TIME');
 
 
 function getValidRange(value, from, to, tag) {
@@ -66,10 +66,10 @@ async function main() {
         return;
     }
     console.log('````````````````````````````````````````````````')
-    console.log('MainProcessChecker v1.0')
-    console.log('config.INTERVAL_CHECK_TIME', INTERVAL_CHECK_TIME)
-    console.log('config.INTERVAL_REPORT_TIME', INTERVAL_REPORT_TIME)
-    console.log('config.SILENT_MODE', config.SILENT_MODE)
+    info('MainProcessChecker v1.0')
+    info('config.INTERVAL_CHECK_TIME', INTERVAL_CHECK_TIME)
+    info('config.INTERVAL_REPORT_TIME', INTERVAL_REPORT_TIME)
+    info('config.SILENT_MODE', config.SILENT_MODE)
     console.log('````````````````````````````````````````````````')
     await initialProcess(await getMainProcesses());
 
@@ -111,7 +111,7 @@ async function telegramUpdate() {
 
 async function intervalReport() {
     try {
-        console.log('INTERVAL REPORT: PROCESS COUNT', originalProcesses.length);
+        info('INTERVAL REPORT: PROCESS COUNT', originalProcesses.length);
         await telegramSend('INTERVAL REPORT: PROCESS COUNT ' +  originalProcesses.length)
     } catch (err) {
         console.error(err);
